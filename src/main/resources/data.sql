@@ -19,3 +19,6 @@ INSERT INTO users (id, user_name, division) VALUES
 (18, '枝村 和彦', '開発課'),
 (19, '大西 由美', '営業課'),
 (20, '石井 勇介', '人事課');
+
+INSERT INTO csv_files (id, file_name, original_file_name, upload_date) VALUES
+(1, '1704270845669_testData.csv', 'testData.csv', '2024-01-03 17:34:05')

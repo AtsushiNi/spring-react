@@ -19,6 +19,29 @@ function App() {
       .catch((e) => console.log(e))
   }, []);
 
+  const handleFileChange = (event) => {
+    const csvFile = event.target.files[0];
+
+    if(!csvFile) {
+      return
+    }
+    if(!csvFile.name.endsWith(".csv")) {
+      alert("CSVファイルを選択してください")
+      return
+    }
+
+    const formData = new FormData();
+    formData.append("file", csvFile);
+
+    axios.post("/api/v1/users/upload", formData)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  }
+
   const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
     clipPath: 'inset(50%)',
@@ -94,7 +117,7 @@ function App() {
             <Grid item>
               <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
                 Upload CSV
-                <VisuallyHiddenInput type="file" />
+                <VisuallyHiddenInput type="file" accept='.csv' onChange={handleFileChange} />
               </Button>
             </Grid>
           </Grid>
