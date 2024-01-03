@@ -1,12 +1,26 @@
+import { useState } from 'react';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { Button, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Box, Button, Grid, Paper, Step, StepLabel, Stepper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { SimpleModal } from './SimpleModal';
 
 export const UploadFilesPage = () => {
-    const uploadedFiles = [
-        {id: 1, originalFileName: "file1.csv", uploadedDate: (new Date()).toLocaleString()},
-        {id: 2, originalFileName: "file2.csv", uploadedDate: (new Date()).toLocaleString()}
-    ]
-    return (
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const handleCloseModal = () => setModalOpen(false);
+
+  const uploadedFiles = [
+    { id: 1, originalFileName: "file1.csv", uploadedDate: (new Date()).toLocaleString() },
+    { id: 2, originalFileName: "file2.csv", uploadedDate: (new Date()).toLocaleString() }
+  ]
+
+  const steps = [
+    'Upload new CSV file',
+    'Please wait for processing',
+    'Verify that the changes are correct',
+    'Complete !',
+  ]
+
+  return (
     <>
       <Grid container justifyContent="space-between" alignItems="flex-end">
         <Grid item>
@@ -20,9 +34,29 @@ export const UploadFilesPage = () => {
         </Grid>
 
         <Grid item>
-          <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
+          <Button component="label" variant="contained" startIcon={<CloudUploadIcon />} onClick={() => setModalOpen(true)}>
             Upload CSV
           </Button>
+          <SimpleModal
+            open={modalOpen}
+            onClose={handleCloseModal}
+            title="Upload new CSV File"
+          >
+            <Box sx={{ width: "100%" }}>
+              <Stepper activeStep={0} alternativeLabel >
+                {steps.map(label => (
+                  <Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
+            </Box>
+            <Typography gutterBottom>
+              Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+              dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+              consectetur ac, vestibulum at eros.
+            </Typography>
+          </SimpleModal>
         </Grid>
       </Grid>
 
@@ -52,5 +86,5 @@ export const UploadFilesPage = () => {
         </Table>
       </TableContainer>
     </>
-    )
+  )
 }
