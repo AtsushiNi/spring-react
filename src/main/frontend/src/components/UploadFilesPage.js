@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { Box, Button, Grid, Paper, Step, StepLabel, Stepper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Grid, Paper, Step, StepLabel, Stepper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import Dropzone from 'dropzone';
 import { SimpleModal } from './SimpleModal';
 import 'dropzone/dist/dropzone.css'
+import { create } from '@mui/material/styles/createTransitions';
 
 export const UploadFilesPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [dropzone, setDropzone] = useState(null);
   const [activeStep, setActiveStep] = useState(0);
   const [file, setFile] = useState();
 
@@ -33,7 +35,9 @@ export const UploadFilesPage = () => {
   ]
 
   const onEntered = () => {
-    let dropzone = new Dropzone(
+    if (dropzone) return;
+
+    let createdDropzone = new Dropzone(
       "#dropzone",
       {
         url: "/test", // 実際はここでアップロードしない
@@ -43,7 +47,8 @@ export const UploadFilesPage = () => {
         acceptedFiles: "text/csv"
       }
     );
-    dropzone.on("addedfile", selectedFile => setFile(selectedFile));
+    createdDropzone.on("addedfile", selectedFile => setFile(selectedFile));
+    setDropzone(createdDropzone);
   }
 
   return (
@@ -89,7 +94,29 @@ export const UploadFilesPage = () => {
                 </>
               )
               : activeStep === 1
-                ? (<></>)
+                ? (
+                  <>
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      height="100px"
+                      sx={{ mt: 4 }}
+                    >
+                      <CircularProgress />
+                    </Box>
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      sx={{ mb: 2 }}
+                    >
+                      <Typography>
+                        処理中です。お待ちください....
+                      </Typography>
+                    </Box>
+                  </>
+                )
                 : (<></>)
             }
           </SimpleModal>
