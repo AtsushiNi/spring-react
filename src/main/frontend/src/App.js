@@ -1,9 +1,11 @@
-import { AppBar, CssBaseline, Link, Toolbar, Typography, Button, Container, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { AppBar, Button, Container, CssBaseline, Grid, Link, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import './App.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import './App.css';
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -16,6 +18,18 @@ function App() {
       .then(response => setUsers(response.data))
       .catch((e) => console.log(e))
   }, []);
+
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+  });
 
   return (
     <div className="App">
@@ -65,16 +79,27 @@ function App() {
         </AppBar>
 
         <Container maxWidth="md" component="main" sx={{ mx: 3, my: 3 }}>
-          <Typography
-            component="h1"
-            variant='h2'
-            align="left"
-            color="text.primary"
-          >
-            User List
-          </Typography>
+          <Grid container justifyContent="space-between" alignItems="flex-end">
+            <Grid item>
+              <Typography
+                component="h1"
+                variant='h2'
+                align="left"
+                color="text.primary"
+              >
+                User List
+              </Typography>
+            </Grid>
 
-          <TableContainer component={Paper}>
+            <Grid item>
+              <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
+                Upload CSV
+                <VisuallyHiddenInput type="file" />
+              </Button>
+            </Grid>
+          </Grid>
+
+          <TableContainer component={Paper} sx={{ mt: 3 }}>
             <Table sx={{ minWith: 650 }} aria-label="user table">
               <TableHead>
                 <TableRow>
