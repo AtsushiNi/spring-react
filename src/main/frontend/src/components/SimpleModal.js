@@ -2,12 +2,12 @@ import { Dialog, DialogContent, DialogTitle, IconButton } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close'
 
 export const SimpleModal = (props) => {
-    const { onClose, open, title, children } = props;
+    const { onClose, onEntered, open, title, children } = props;
 
     const handleClose = () => onClose();
 
     return (
-        <Dialog onClose={handleClose} open={open}>
+        <Dialog onClose={handleClose} onMouseEnter={onEntered} open={open}>
             <DialogTitle>{title}</DialogTitle>
             <IconButton
                 aria-label="close"

@@ -1,12 +1,24 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { Box, Button, Grid, Paper, Step, StepLabel, Stepper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import Dropzone from 'dropzone';
 import { SimpleModal } from './SimpleModal';
+import 'dropzone/dist/dropzone.css'
 
 export const UploadFilesPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [activeStep, setActiveStep] = useState(0);
+  const [file, setFile] = useState();
 
-  const handleCloseModal = () => setModalOpen(false);
+  const handleCloseModal = () => {
+    setFile(null);
+    setModalOpen(false);
+  }
+
+  const handleUpload = () => {
+    // TODO: update file
+    setActiveStep(1);
+  }
 
   const uploadedFiles = [
     { id: 1, originalFileName: "file1.csv", uploadedDate: (new Date()).toLocaleString() },
@@ -19,6 +31,20 @@ export const UploadFilesPage = () => {
     'Verify that the changes are correct',
     'Complete !',
   ]
+
+  const onEntered = () => {
+    let dropzone = new Dropzone(
+      "#dropzone",
+      {
+        url: "/test", // 実際はここでアップロードしない
+        method: "GET",
+        autoProcessQueue: false,
+        maxFiles: 1,
+        acceptedFiles: "text/csv"
+      }
+    );
+    dropzone.on("addedfile", selectedFile => setFile(selectedFile));
+  }
 
   return (
     <>
@@ -40,10 +66,11 @@ export const UploadFilesPage = () => {
           <SimpleModal
             open={modalOpen}
             onClose={handleCloseModal}
+            onEntered={onEntered}
             title="Upload new CSV File"
           >
             <Box sx={{ width: "100%" }}>
-              <Stepper activeStep={0} alternativeLabel >
+              <Stepper activeStep={activeStep} alternativeLabel >
                 {steps.map(label => (
                   <Step key={label}>
                     <StepLabel>{label}</StepLabel>
@@ -51,11 +78,20 @@ export const UploadFilesPage = () => {
                 ))}
               </Stepper>
             </Box>
-            <Typography gutterBottom>
-              Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-              dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-              consectetur ac, vestibulum at eros.
-            </Typography>
+            {activeStep === 0
+              ? (
+                <>
+                  <form className='dropzone' id="dropzone" style={{ border: "1px solid silver", marginTop: "20px", background: "#f0f0f0" }}></form>
+                  <Box display="flex" justifyContent="flex-end" sx={{ my: 3 }}>
+                    <Button color="inherit" onClick={handleCloseModal} sx={{ mx: 2 }}>cancel</Button>
+                    <Button variant="contained" disabled={!file} onClick={handleUpload}>Upload</Button>
+                  </Box>
+                </>
+              )
+              : activeStep === 1
+                ? (<></>)
+                : (<></>)
+            }
           </SimpleModal>
         </Grid>
       </Grid>

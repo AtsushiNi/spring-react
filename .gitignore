@@ -35,3 +35,6 @@ build/
 ### React ###
 node_modules
 node
+
+### Mac OS ###
+.DS_Store
