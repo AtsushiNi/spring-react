@@ -5,6 +5,10 @@ Spring BootとReactを別サーバーに立てて通信するのではなく、
 Spring Boot起動時にsrc/resources/staticにReactのバンドルファイルをコピーする  
 また、nodeやnpmを起動時にプロジェクト内のディレクトリにインストールすることで、開発環境をプロジェクト内で閉じる
 
+# user-listブランチ
+バックエンドではH2データベースを使用し、ユーザー情報を保存。  
+ReactからaxiosでSpring BootのAPIを叩き、一覧を表示する
+
 # 起動方法
 開発時はReactのホットリロードを利用・Spring起動を短時間でしたいため、サーバーを分ける
 
