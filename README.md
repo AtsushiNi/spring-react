@@ -5,7 +5,9 @@ Spring BootとReactを別サーバーに立てて通信するのではなく、
 Spring Boot起動時にsrc/resources/staticにReactのバンドルファイルをコピーする  
 また、nodeやnpmを起動時にプロジェクト内のディレクトリにインストールすることで、開発環境をプロジェクト内で閉じる
 
-# plainブランチ
+# ブランチ
+1. plain ブランチ
+
 バックエンドのSpring Bootと、フロントエンドのReactを実装  
 ただし、フロントエンドとバックエンドのAPIによる通信は行っていない
 
